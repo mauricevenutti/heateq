@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wärmeleitung · Fourier-Applet</title>
+  <link rel="stylesheet" href="vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="vendor/katex/katex.min.js"></script>
+  <script defer src="vendor/math.js"></script>
+  <script defer src="solver.js"></script>
+  <script defer src="series.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <main class="sheet">
+    <header>
+      <div class="eyebrow">Analysis III <span data-tex="\alpha=1,\quad L=\pi"></span></div>
+      <h1>Wärmeleitung auf einem Stab</h1>
+    </header>
+
+    <section aria-labelledby="boundary-title">
+      <h2 id="boundary-title"><span class="step-number">01</span> Randbedingungen</h2>
+      <div class="select-row">
+        <label for="boundary">Stabtyp</label>
+        <select id="boundary">
+          <option value="">Bitte wählen …</option>
+          <option value="dirichlet">Feste Endtemperatur</option>
+          <option value="neumann">Isolierte Enden</option>
+          <option value="periodic">Kreisförmiger Stab</option>
+        </select>
+      </div>
+      <div id="problem-math" class="display-math problem-equation" hidden></div>
+    </section>
+
+    <section id="function-step" aria-labelledby="function-title" hidden>
+      <h2 id="function-title"><span class="step-number">02</span> Anfangsfunktion</h2>
+      <form id="function-form">
+        <div class="select-row">
+          <label for="preset">Beispiel</label>
+          <select id="preset"><option value="">Eigene Funktion …</option></select>
+        </div>
+        <div class="function-row">
+          <label for="expression" data-tex="\varphi(x)="></label>
+          <input id="expression" type="text" autocomplete="off" spellcheck="false" placeholder="z. B. 1-(x/L)^2" aria-label="Anfangsfunktion">
+          <button type="submit">Übernehmen</button>
+        </div>
+        <div id="function-preview" class="display-math" hidden></div>
+        <p id="error" class="error" role="alert" hidden></p>
+      </form>
+    </section>
+
+    <section id="fourier-step" aria-labelledby="fourier-title" hidden>
+      <h2 id="fourier-title"><span class="step-number">03</span> Fourierapproximation</h2>
+      <div class="order-controls">
+        <label for="terms">Fourierkomponenten</label>
+        <input id="terms" type="range" min="1" max="10" step="1" value="1">
+        <output id="order-value" for="terms" aria-live="polite"></output>
+      </div>
+      <div id="series-preview" class="display-math series-preview" aria-live="polite"></div>
+    </section>
+
+    <section id="plot-section" aria-label="Funktionsplot" hidden>
+      <div class="plot-legend">
+        <span><i class="line-swatch initial"></i><span id="reference-label" data-tex="\varphi(x)"></span><span id="reference-note" hidden>Referenz · 200 Moden</span></span>
+        <span id="sum-legend" hidden><i class="line-swatch solution"></i><span id="sum-label"></span></span>
+      </div>
+      <div id="main-plot" class="plot"></div>
+      <figure id="rod-figure" class="rod-figure">
+        <figcaption id="rod-caption">Temperatur im Stab</figcaption>
+        <div id="rod-plot"></div>
+        <div class="temperature-key" aria-label="Feste Temperaturskala">
+          <span>kalt <span id="temperature-min"></span></span>
+          <span class="temperature-ramp" aria-hidden="true"></span>
+          <span><span id="temperature-max"></span> heiss</span>
+        </div>
+      </figure>
+      <button id="next-animation" class="primary" type="button" hidden>Zur Zeitanimation →</button>
+    </section>
+
+    <section id="animation-step" aria-labelledby="animation-title" hidden>
+      <h2 id="animation-title"><span class="step-number">04</span> Zeitanimation</h2>
+      <div class="time-controls">
+        <button id="play" type="button" aria-label="Animation starten">▶ Start</button>
+        <button id="reset-time" type="button" aria-label="Zeit zurücksetzen">↺</button>
+        <label class="sr-only" for="time-slider">Zeit</label>
+        <input id="time-slider" type="range" min="0" max="1" step="0.0001" value="0">
+        <label for="time-value" data-tex="t="></label>
+        <input id="time-value" type="number" min="0" step="0.001" value="0" aria-label="Zeitwert">
+      </div>
+    </section>
+  </main>
+</body>
+</html>
